@@ -1,0 +1,15 @@
+[project]
+name = "desi-selection-exploration"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "astropy>=8.0.1",
+    "ipympl>=0.10.0",
+    "ipython>=9.17.1",
+    "ipywidgets>=8.1.9",
+    "matplotlib>=3.11.1",
+    "numpy>=2.5.3",
+    "pandas>=3.0.5",
+]
