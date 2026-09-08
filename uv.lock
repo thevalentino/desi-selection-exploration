@@ -150,6 +150,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "astropy" },
+    { name = "fitsio" },
     { name = "ipympl" },
     { name = "ipython" },
     { name = "ipywidgets" },
@@ -161,6 +162,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "astropy", specifier = ">=8.0.1" },
+    { name = "fitsio", specifier = ">=1.4.2" },
     { name = "ipympl", specifier = ">=0.10.0" },
     { name = "ipython", specifier = ">=9.17.1" },
     { name = "ipywidgets", specifier = ">=8.1.9" },
@@ -176,6 +178,37 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/cc/28/c14e053b6762b1044f34a13aab6859bbf40456d37d23aa286ac24cfd9a5d/executing-2.2.1.tar.gz", hash = "sha256:3632cc370565f6648cc328b32435bd120a1e4ebb20c77e3fdde9a13cd1e533c4", size = 1129488, upload-time = "2025-09-01T09:48:10.866Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c1/ea/53f2148663b321f21b5a606bd5f191517cf40b7072c0497d3c92c4a13b1e/executing-2.2.1-py2.py3-none-any.whl", hash = "sha256:760643d3452b4d777d295bb167ccc74c64a81df23fb5e08eff250c425a4b2017", size = 28317, upload-time = "2025-09-01T09:48:08.5Z" },
+]
+
+[[package]]
+name = "fitsio"
+version = "1.4.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3b/fd/53bfe8986f7b242fb5b66ddc9344fe67614102f44438415b0a8b32cf7f0a/fitsio-1.4.2.tar.gz", hash = "sha256:92a02f0e63d539d85ca5a185ae0cc8d40029270858275964ee2539ee0136f0c3", size = 4178786, upload-time = "2026-07-16T12:31:06.723Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/69/03/78203d1af4346a9af17196ccdab22f3a0e6550560db18ca4deaa2ed0ad40/fitsio-1.4.2-cp312-cp312-macosx_13_0_x86_64.whl", hash = "sha256:9246b0f973ec09fb6d9b5b83893acbba27cfad3abe60a7587992dc59412960da", size = 747835, upload-time = "2026-07-16T12:30:37.111Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/a3/a97d94de3b3f8c19007cea81508114de18906f27478beaed8754fab5c547/fitsio-1.4.2-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:90fa61295df6d33feea53ee0bbbe5917b6acb086a3c731239bb2910ec933420c", size = 748444, upload-time = "2026-07-16T12:30:38.733Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/18/7b1bd9e3242e8c83644b4edad345a2faa01f215b4b65cd5fec88519154fc/fitsio-1.4.2-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:430932e6f684fb5e669c1b6e4d4164c52a055eb04af1a18dfa086f343491f9a2", size = 895701, upload-time = "2026-07-16T12:30:39.992Z" },
+    { url = "https://files.pythonhosted.org/packages/df/0c/00a098bd0fccf95f9d068e00691ba2a67e73505870b40694680453e94ca8/fitsio-1.4.2-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:762e41fac17e546685d4fee4738ec3853e3c40bd15b3444902256e303ef4302a", size = 812094, upload-time = "2026-07-16T12:30:41.536Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/a0/c3e617bea23769d002f7650c96cba1020131f0bc65a67c6542753de14244/fitsio-1.4.2-cp312-cp312-win_amd64.whl", hash = "sha256:9db81b13ffcf117ca14c09682ec039fb55f898fee408d8a9a8743aaa1bc18092", size = 699575, upload-time = "2026-07-16T12:30:43.14Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/c0/2cc526fcdc14b7d44bd64af8762cdff7db724534efeb9ae165cc0a5462bd/fitsio-1.4.2-cp313-cp313-macosx_13_0_x86_64.whl", hash = "sha256:43177e44f741178c37c17a2fd2f422f2fb4d4e95ee12447e725d8f5dc8b45b7a", size = 752370, upload-time = "2026-07-16T12:30:44.461Z" },
+    { url = "https://files.pythonhosted.org/packages/3e/2b/7df3232dbcb78ade5ea3cd80af4da09e78db9dc55fbf34b6d3eb07e5ba32/fitsio-1.4.2-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:e1385cb175b09fe0190fa0a9057a1cae15e4a6a316de32a30982cba9b07e3a98", size = 752421, upload-time = "2026-07-16T12:30:45.88Z" },
+    { url = "https://files.pythonhosted.org/packages/77/13/c85557035c01150e6b882bcf1b2131a78d767def1906527b2989b3b5d819/fitsio-1.4.2-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:91fe0904d9f6a77a3c12f1943e28994c7d8c60a10b98506fbeb16fe9c2422106", size = 920719, upload-time = "2026-07-16T12:30:47.306Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/2d/af26509323791b9fce7ded6e2f45640afb12c0d3ff766f03a96d2524d2c5/fitsio-1.4.2-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:0e1652ff0c9fab23f22dc3309edd6755755d2aaaa79e3e492db70b947cc1d4c8", size = 818040, upload-time = "2026-07-16T12:30:48.699Z" },
+    { url = "https://files.pythonhosted.org/packages/75/bf/421e406d7012749a8d1f55251f25655f1cff7556179eede65b2e8d3bff45/fitsio-1.4.2-cp313-cp313-win_amd64.whl", hash = "sha256:f24192d972be9d9889b3debd4e72ba8cf473bdc39b742a55bfdf7c669a4e8393", size = 704082, upload-time = "2026-07-16T12:30:50.084Z" },
+    { url = "https://files.pythonhosted.org/packages/16/3d/7a6f9f0acacf2fa85eecb1d57433af78f5a207d20e0bfa992bd5e6180238/fitsio-1.4.2-cp314-cp314-macosx_13_0_x86_64.whl", hash = "sha256:b9a0cb316bcac741fc403f757d1e00ca876277b491894be4563d55341cdb8991", size = 752413, upload-time = "2026-07-16T12:30:51.387Z" },
+    { url = "https://files.pythonhosted.org/packages/86/5e/94b33cc192b3f46673876fa463cad19f59902a4bc071935ab52d4d78dabf/fitsio-1.4.2-cp314-cp314-macosx_14_0_arm64.whl", hash = "sha256:8ad8d4a846c51887ff3394856b94dff02b44af0c244b8af3345d064b52cf874d", size = 752499, upload-time = "2026-07-16T12:30:52.778Z" },
+    { url = "https://files.pythonhosted.org/packages/31/ae/2d48a7e9e093101a2b070592ce87ab6beea0a0778be411e529b2fa3d9967/fitsio-1.4.2-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:7a4ce82fe174b129a4f90080de7cb3bbb7524f1c52268410facbd48086fa4d50", size = 920693, upload-time = "2026-07-16T12:30:54.369Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/28/0943bcabd64b7bc9c69e7b09e2ea5861136ca9477c5fd9d399c3dbeaf450/fitsio-1.4.2-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:90c9a71f023199d48ab0578f0ecb89a3e96acbc5e898acb8f9cc73e09251b17b", size = 817988, upload-time = "2026-07-16T12:30:55.996Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/77/60733c83117340379d7ecaf99981728462e2168464d895f1b3d36d47d674/fitsio-1.4.2-cp314-cp314-win_amd64.whl", hash = "sha256:447b27fb1e71eeee3fcbc6c967d280776e8567ce875a49b62c9033040c7004ec", size = 720283, upload-time = "2026-07-16T12:30:57.85Z" },
+    { url = "https://files.pythonhosted.org/packages/f1/fb/9215bcfb9b0c5ddf547981f0281f213c7eb465e0999ae481ccdf7cc27376/fitsio-1.4.2-cp314-cp314t-macosx_13_0_x86_64.whl", hash = "sha256:54d580b9c7248fb681582d73535c3a91ba4962634edc6abad048f5962bc967f8", size = 752753, upload-time = "2026-07-16T12:30:59.622Z" },
+    { url = "https://files.pythonhosted.org/packages/15/8c/ddd3edb2021137a4143ba801267a5460f283822b06c2a07b29813dbf3c40/fitsio-1.4.2-cp314-cp314t-macosx_14_0_arm64.whl", hash = "sha256:a4302ae1be2180960c1db26e6d5e88e52af6c7bea36f612ba1c007f6e1da720b", size = 753061, upload-time = "2026-07-16T12:31:01.007Z" },
+    { url = "https://files.pythonhosted.org/packages/9b/f1/12ca8f1a91a2c5ff06b88b65c936bcaf2427abcd2045d86b6dc50858344e/fitsio-1.4.2-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:2d60911c885b848c9837e5e2417ef5efe5ce02e79371ac6461c5ac120cacce6c", size = 939977, upload-time = "2026-07-16T12:31:02.308Z" },
+    { url = "https://files.pythonhosted.org/packages/17/10/04fdb12633307e700127d13e3ff7cf02101367aa315801e327d690b4cf07/fitsio-1.4.2-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:b878ec0ad199bc857339fbd58cd76701a636ade3f0947f752846996e3e381236", size = 818384, upload-time = "2026-07-16T12:31:03.945Z" },
+    { url = "https://files.pythonhosted.org/packages/41/ba/31435265ec550af89e89cebad4335e55216fb8f8487d0da37a481cab02b0/fitsio-1.4.2-cp314-cp314t-win_amd64.whl", hash = "sha256:b4b665264d1ffb500bb0058d4d7fa1a5da3fe82a1d291a1f600253711bccacd2", size = 719706, upload-time = "2026-07-16T12:31:05.235Z" },
 ]
 
 [[package]]
