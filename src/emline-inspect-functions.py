@@ -135,19 +135,16 @@ def get_bounds(n_lines):
     return (lower, upper)
 
 
-def fit_spectrum_lines(fits_path, emps, z=None):
+def fit_spectrum_lines(spec, z):
     """
     Fit the ha_n2, hb and o3_b emission-line complexes for a single spectrum.
 
     Parameters
     ----------
-    fits_path : str or Path
-        Path to a spectrum fits file in `data/spectra/` (columns 'wavelength', 'flux', 'ivar').
-    z : float, optional
-        Redshift to use as the fit's initial guess. If not given, it is looked up
-        by TARGETID (parsed from the file name) in `emp_catalog_path`.
-    emps : pandas.DataFrame or astropy.table.Table
-        Catalog used to look up the redshift when `z` is not given.
+    spec : astropy.table.Table
+        Spectrum data with 'wavelength', 'flux' and 'ivar' columns.
+    z : float
+        Redshift to use as the fit's initial guess.
 
     Returns
     -------
@@ -155,16 +152,6 @@ def fit_spectrum_lines(fits_path, emps, z=None):
         Mapping from line-group name ("ha_n2", "hb", "o3_b") to a dict with
         keys "popt", "pcov", "perr" (1-sigma errors) and "param_names".
     """
-    spec = Table.read(fits_path, format="fits")
-
-    if z is None:
-        targetid = int(Path(fits_path).stem)
-        emps_catalog = emps.to_pandas() if isinstance(emps, Table) else emps
-        matches = emps_catalog.loc[emps_catalog["TARGETID"] == targetid, "Z"]
-        if matches.empty:
-            raise ValueError(f"TARGETID {targetid} not found in emps; pass z explicitly.")
-        z = float(matches.iloc[0])
-
     results = {}
     for name, (centers, window) in LINE_GROUPS.items():
         mask = (
@@ -259,11 +246,7 @@ def report_and_plot(idx, emps, fignum=None):
     R3 = emps['R3'].iloc[idx]
     ston = emps['ston'].iloc[idx]
 
-    result = fit_spectrum_lines(
-        f'../data/spectra/{targetid}.fits',
-        emps,
-        z=z,
-    )
+    result = fit_spectrum_lines(spec, z)
 
     print("My estimate of NII S/N: ", result['ha_n2']['popt'][4] / result['ha_n2']['perr'][4])
     print("EmFit estimate of  S/N: ", ston)
@@ -284,11 +267,7 @@ def plot_ha_nii(idx, emps, fignum=None):
     spec = Table.read(f'../data/spectra/{targetid}.fits', format='fits')
     z = emps['Z'].iloc[idx]
 
-    result = fit_spectrum_lines(
-        f'../data/spectra/{targetid}.fits',
-        emps,
-        z=z,
-    )
+    result = fit_spectrum_lines(spec, z)
 
     ha_n2_result = result['ha_n2']
     sigma = ha_n2_result['popt'][1]
