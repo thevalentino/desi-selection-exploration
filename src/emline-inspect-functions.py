@@ -311,3 +311,97 @@ def plot_ha_nii(idx, emps, fignum=None):
     plt.show()
 
     return result, fig, ax
+
+
+
+def stack_spectra(targetids, emps, spectra_dir="../data/spectra", dwave=0.8, norm_window=(5950, 6050)):
+    """
+    Build an inverse-variance weighted stack of rest-frame spectra.
+
+    Parameters
+    ----------
+    targetids : list of int
+        TARGETIDs identifying the spectra to stack (files named f"{targetid}.fits"
+        in `spectra_dir`, with 'wavelength', 'flux', 'ivar' columns).
+    emps : pandas.DataFrame or astropy.table.Table
+        Catalog used to look up the redshift (column 'Z') for each TARGETID.
+    spectra_dir : str or Path, optional
+        Directory containing the per-target spectrum fits files.
+    dwave : float, optional
+        Rest-frame wavelength step (in Angstroms) of the common output grid.
+    norm_window : tuple of float, optional
+        Rest-frame wavelength range (in Angstroms) used to normalize each
+        spectrum by its mean flux before stacking (default: a line-free window
+        around 6000 A).
+
+    Returns
+    -------
+    stacked : astropy.table.Table
+        Table with columns 'wavelength' (common rest-frame grid), 'flux'
+        (inverse-variance weighted mean flux), 'ivar' (summed inverse
+        variance of the flux estimate) and 'n_contrib' (number of spectra
+        contributing, i.e. ivar > 0, at each grid point).
+    """
+    spectra_dir = Path(spectra_dir)
+    emps_catalog = emps.to_pandas() if isinstance(emps, Table) else emps
+
+    rest_waves, rest_fluxes, rest_ivars = [], [], []
+    for targetid in targetids:
+        matches = emps_catalog.loc[emps_catalog["TARGETID"] == targetid, "Z"]
+        if matches.empty:
+            raise ValueError(f"TARGETID {targetid} not found in emps.")
+        z = float(matches.iloc[0])
+
+        spec = Table.read(spectra_dir / f"{targetid}.fits", format="fits")
+        wave = np.asarray(spec["wavelength"])
+        flux = np.asarray(spec["flux"])
+        ivar = np.asarray(spec["ivar"])
+
+        # Shift to rest frame, conserving flux (and its variance) under the transform.
+        rest_wave = wave / (1 + z)
+        rest_flux = flux * (1 + z)
+        rest_ivar = ivar / (1 + z) ** 2
+
+        # Normalize by the mean continuum flux in a line-free window so all
+        # spectra contribute on a comparable scale before weighting/stacking.
+        norm_mask = (rest_wave >= norm_window[0]) & (rest_wave <= norm_window[1])
+        norm = np.mean(rest_flux[norm_mask])
+        if not np.isfinite(norm) or norm <= 0:
+            raise ValueError(f"TARGETID {targetid}: invalid normalization flux ({norm}) in {norm_window}.")
+
+        rest_waves.append(rest_wave)
+        rest_fluxes.append(rest_flux / norm)
+        rest_ivars.append(rest_ivar * norm ** 2)
+
+    # Common rest-frame grid spanning the overlap of all input spectra.
+    wave_min = max(w.min() for w in rest_waves)
+    wave_max = min(w.max() for w in rest_waves)
+    wave_grid = np.arange(wave_min, wave_max, dwave)
+
+    ivar_sum = np.zeros_like(wave_grid)
+    flux_ivar_sum = np.zeros_like(wave_grid)
+    n_contrib = np.zeros_like(wave_grid, dtype=int)
+
+    for wave, flux, ivar in zip(rest_waves, rest_fluxes, rest_ivars):
+        order = np.argsort(wave)
+        wave, flux, ivar = wave[order], flux[order], ivar[order]
+
+        flux_i = np.interp(wave_grid, wave, flux)
+        ivar_i = np.interp(wave_grid, wave, ivar, left=0.0, right=0.0)
+        ivar_i[ivar_i < 0] = 0.0
+
+        flux_ivar_sum += flux_i * ivar_i
+        ivar_sum += ivar_i
+        n_contrib += ivar_i > 0
+
+    with np.errstate(invalid="ignore", divide="ignore"):
+        stacked_flux = np.where(ivar_sum > 0, flux_ivar_sum / ivar_sum, np.nan)
+
+    return Table(
+        {
+            "wavelength": wave_grid,
+            "flux": stacked_flux,
+            "ivar": ivar_sum,
+            "n_contrib": n_contrib,
+        }
+    )
