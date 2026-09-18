@@ -21,7 +21,10 @@ LINE_GROUPS = {
     "o3_b": (o3_b, o3_b_window),
 }
 
-emps = Table.read("../data/emp-candidates.fits", format="fits").to_pandas()
+emps = Table.read(
+    Path(__file__).resolve().parents[1] / "data" / "emp-candidates.fits",
+    format="fits",
+).to_pandas()
 
 
 def make_gaussian_model(centers):
